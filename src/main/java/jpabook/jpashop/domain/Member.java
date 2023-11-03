@@ -26,6 +26,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> Orders = new ArrayList<>();
 
+    public Member(String username) {
+        this.username = username;
+    }
+
     public Member(String username, Address address) {
         this.username = username;
         this.address = address;

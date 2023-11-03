@@ -24,14 +24,24 @@ public class OrderItem {
 
     private int count;
 
-    public OrderItem(Item item, Order order, int orderPrice, int count) {
-        this.item = item;
-        this.order = order;
-        this.orderPrice = orderPrice;
-        this.count = count;
+    public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.item = item;
+        orderItem.orderPrice = orderPrice;
+        orderItem.count = count;
+        item.removeStock(count);
+        return orderItem;
     }
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public void cancel() {
+        getItem().addStock(count);
+    }
+
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
     }
 }

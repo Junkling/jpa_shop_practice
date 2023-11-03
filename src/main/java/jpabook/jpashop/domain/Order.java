@@ -34,11 +34,17 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public Order(Member member, Delivery delivery, LocalDateTime orderDate, OrderStatus status) {
-        setMember(member);
-        setDelivery(delivery);
-        this.orderDate = orderDate;
-        this.status = status;
+    //생성 메서드
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        order.status = OrderStatus.ORDER;
+        order.orderDate = LocalDateTime.now();
+        return order;
     }
 
     //연관관계 메서드
@@ -55,5 +61,29 @@ public class Order {
     private void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
+    }
+
+    /**
+     * 주문 취소
+     */
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송된 상품은 취소 불가합니다.");
+        }
+        this.status = OrderStatus.CANCEL;
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
+    }
+
+    /**
+     * 주문 전체 가격
+     */
+    public int getTotalPrice() {
+        int total = 0;
+        for (OrderItem orderItem : orderItems) {
+            total += orderItem.getTotalPrice();
+        }
+        return total;
     }
 }
