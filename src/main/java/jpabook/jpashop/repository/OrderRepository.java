@@ -26,11 +26,8 @@ public class OrderRepository {
     }
 
     public List<Order> findAll(OrderSearch orderSearch) {
-        //정적 쿼리일 시
-//        List<Order> resultList = em.createQuery("select o from Order o join o.member m where o.status = :status and m.name like :name", Order.class).setParameter("status",orderSearch.getOrderStatus()).setParameter("name",orderSearch.getMemberName()).setMaxResults(1000).getResultList();
-
-        // 동적 쿼리일 시
-        String jpql = "select o From Order o join o.member m";
+        //language=JPAQL
+        String jpql = "select o From Order o join fetch o.member m";
         boolean isFirstCondition = true;
         //주문 상태 검색
         if (orderSearch.getOrderStatus() != null) {
@@ -75,7 +72,7 @@ public class OrderRepository {
             list.add(status);
         }
         if (StringUtils.hasText(orderSearch.getMemberName())) {
-            Predicate name = cb.like(member.<String>get("name"), "%" + orderSearch.getMemberName() + "%");
+            Predicate name = cb.like(member.<String>get("username"), "%" + orderSearch.getMemberName() + "%");
         }
         query.where(cb.and(list.toArray(list.toArray(new Predicate[list.size()]))));
         TypedQuery<Order> orderTypedQuery = em.createQuery(query).setMaxResults(1000);

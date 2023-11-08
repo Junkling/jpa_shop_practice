@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import jpabook.jpashop.domain.item.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor
 public class Member {
@@ -18,20 +20,20 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String username;
+    private String name;
 
     @Embedded
     private Address address;
 
     @OneToMany(mappedBy = "member")
-    private List<Order> Orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
-    public Member(String username) {
-        this.username = username;
+    public Member(String name) {
+        this.name = name;
     }
 
-    public Member(String username, Address address) {
-        this.username = username;
+    public Member(String name, Address address) {
+        this.name = name;
         this.address = address;
     }
 }

@@ -8,6 +8,7 @@ import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.repository.ItemRepository;
 import jpabook.jpashop.repository.MemberRepository;
 import jpabook.jpashop.repository.OrderRepository;
+import jpabook.jpashop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +30,11 @@ public class OrderService {
     public Long order(Long memberId, Long itemId, int count) {
         Member member = memberRepository.find(memberId);
         Item item = itemRepository.findOne(itemId);
-        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
         Delivery delivery = new Delivery(member.getAddress());
+        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
         Order order = Order.createOrder(member, delivery, orderItem);
-
-        return orderRepository.save(order);
+        orderRepository.save(order);
+        return order.getId();
     }
 
     @Transactional
@@ -42,8 +43,13 @@ public class OrderService {
         order.cancel();
     }
 
-//    public List<Order> findOrders(OrderSearch orderSearch) {
-//        return orderRepository.findAll(orderSearch);
-//    }
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        return orderRepository.findAll(orderSearch);
+//        return orderRepository.findAllByCriteria(orderSearch);
+    }
 
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        orderRepository.findOne(orderId).cancel();
+    }
 }

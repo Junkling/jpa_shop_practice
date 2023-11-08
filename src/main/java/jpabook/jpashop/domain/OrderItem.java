@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@Table(name = "order_item")
 public class OrderItem {
     @Id
     @GeneratedValue

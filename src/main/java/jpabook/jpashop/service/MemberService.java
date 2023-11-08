@@ -3,7 +3,6 @@ package jpabook.jpashop.service;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,7 @@ public class MemberService {
 
     //Member.username 에 유니크 제약 조건 추가 권장
     private void validateDuplicate(Member member) {
-        List<Member> byName = memberRepository.findByName(member.getUsername());
+        List<Member> byName = memberRepository.findByName(member.getName());
         if (!byName.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원명입니다.");
         }
