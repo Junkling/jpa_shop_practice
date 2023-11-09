@@ -4,16 +4,19 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jpabook.jpashop.domain.Member;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 
 @Repository
+@Transactional(readOnly = true)
 public class MemberRepository {
 
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
     public Long save(Member member) {
         em.persist(member);
         return member.getId();

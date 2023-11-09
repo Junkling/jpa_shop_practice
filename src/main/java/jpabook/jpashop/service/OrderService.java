@@ -10,6 +10,7 @@ import jpabook.jpashop.repository.MemberRepository;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
@@ -44,6 +46,10 @@ public class OrderService {
     }
 
     public List<Order> findOrders(OrderSearch orderSearch) {
+        List<Order> all = orderRepository.findAll(orderSearch);
+        for (Order order : all) {
+            log.info("order.getOrderItem={}", order.getOrderItems().get(0));
+        }
         return orderRepository.findAll(orderSearch);
 //        return orderRepository.findAllByCriteria(orderSearch);
     }
