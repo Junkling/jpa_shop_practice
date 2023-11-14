@@ -1,7 +1,10 @@
 package jpabook.jpashop;
 
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class JpashopApplication {
@@ -10,4 +13,13 @@ public class JpashopApplication {
 		SpringApplication.run(JpashopApplication.class, args);
 	}
 
+	@Bean
+	Hibernate5JakartaModule hibernate5Module() {
+		Hibernate5JakartaModule module = new Hibernate5JakartaModule();
+		module.configure(Hibernate5JakartaModule.Feature.FORCE_LAZY_LOADING, true);
+		return module;
+//		return new Hibernate5JakartaModule();
+	}
 }
+
+

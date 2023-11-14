@@ -5,10 +5,11 @@ import jakarta.persistence.*;
 import jpabook.jpashop.domain.item.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Setter
 public class Delivery {
     @Id
     @GeneratedValue
@@ -16,7 +17,7 @@ public class Delivery {
     private Long id;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery",fetch = FetchType.LAZY)
     private Order order;
 
     @Embedded
@@ -25,17 +26,4 @@ public class Delivery {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
-    public Delivery(Order order, Address address, DeliveryStatus status) {
-        this.order = order;
-        this.address = address;
-        this.status = status;
-    }
-
-    public Delivery(Address address) {
-        this.address = address;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }
