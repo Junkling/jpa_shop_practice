@@ -1,5 +1,7 @@
 package jpabook.jpashop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,11 +17,12 @@ import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "orders")
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter
 @Slf4j
+@Getter
 public class Order {
+
     @Id
     @GeneratedValue
     @Column(name = "order_id")
@@ -67,10 +70,14 @@ public class Order {
         }
         order.setStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
+        for (OrderItem orderItem : order.getOrderItems()) {
+            System.out.println("orderItems = " + orderItem.toString());
+        }
         return order;
     }
 
     //==비즈니스 로직==//
+
     /**
      * 주문 취소
      */
@@ -86,6 +93,7 @@ public class Order {
     }
 
     //==조회 로직==//
+
     /**
      * 전체 주문 가격 조회
      */

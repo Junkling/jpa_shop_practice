@@ -7,9 +7,9 @@ spring:
     url: jdbc:h2:tcp://localhost/~/newtest
     username: sa
     password: 1234
-  jackson:
-    serialization:
-      FAIL_ON_EMPTY_BEANS: false
+#  jackson:
+#    serialization:
+#      FAIL_ON_EMPTY_BEANS: false
 
   jpa:
     open-in-view: false
@@ -19,6 +19,7 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100
     defer-datasource-initialization: true
 
 logging:

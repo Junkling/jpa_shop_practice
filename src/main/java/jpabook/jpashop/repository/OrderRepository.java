@@ -5,18 +5,18 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
 public class OrderRepository {
     private final EntityManager em;
+    public OrderRepository(EntityManager em) {
+        this.em = em;
+    }
 
     public Long save(Order order) {
         em.persist(order);
@@ -83,6 +83,13 @@ public class OrderRepository {
 
     public List<Order> findAllWithMemberDelivery() {
         List<Order> resultList = em.createQuery("select o from Order o join fetch o.member m join fetch o.delivery d", Order.class).getResultList();
+        return resultList;
+    }
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        List<Order> resultList = em.createQuery("select o from Order o join fetch o.member m join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
         return resultList;
     }
 
