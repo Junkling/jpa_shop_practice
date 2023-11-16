@@ -1,7 +1,6 @@
 package jpabook.jpashop.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jpabook.jpashop.domain.item.Item;
 import lombok.*;

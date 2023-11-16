@@ -30,6 +30,14 @@ public class OrderApiController {
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
 
+    /**
+     *  v1~v3의 경우 컨트롤러까지 커넥트를 유지해야 작동한다.
+     *  커넥트를 유지하려면 jpa: open-in-view: true 로 세팅 해야한다.
+     *  컨트롤러까지 커넥션을 들고 있지만 리소스 낭비가 심해진다.
+     *
+     *  jpa: open-in-view: false 로 두게된다면 리소스 낭비가 덜해지지만 영속성이 컨트롤러 까지 유지되지 않기 때문에 엔티티에 대한 정보를 컨트롤러까지 가져오지 못한다.
+     *  이를 방지 하기 위해서는 영속성 컨텍스트가 유지되는 서비스 or 리포지토리에서 엔티티 가공 작업(DTO로 바꾸는등)을 해서 넘어와야 한다.
+     */
     @GetMapping("/api/v1/orders")
     public List<Order> orderList() {
         List<Order> all = orderRepository.findAll(new OrderSearch());
